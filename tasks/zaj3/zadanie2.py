@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import csv
 
 def merge(path1, path2, out_file):
     """
@@ -25,10 +26,35 @@ def merge(path1, path2, out_file):
     Najlepsza implementacja nie wymaga ma złożoność pamięciową ``O(1)``.
     Podpowiedź: merge sort. Nie jest to trywialne zadanie, ale jest do zrobienia.
     """
+    list = []
+    dict = {}
+    with open(path1, 'r') as f:
+        r = csv.reader(f, dialect=csv.unix_dialect)
+        for line in r:
+            #tuple = (line[0], int(line[1]))
+            #list.append(tuple)
+            dict[line[0]] = int(line[1])
+    #for ii in list:
+    #    dict[ii[0]] = int(ii[1])
+    with open(path2, 'r') as f:
+        r = csv.reader(f, dialect=csv.unix_dialect)
+        for line in r:
+            if line[0] in dict:
+                dict[line[0]] += int(line[1])
+            else:
+                dict[line[0]] = int(line[1])
+    list2 = []
+    for key, value in dict.items():
+        tuple = (key, value)
+        list2.append(tuple)
+    list2.sort(key=lambda x: x[0])
+    with open(out_file, 'w') as f:
+        w = csv.writer(f, dialect=csv.unix_dialect)
+        w.writerows(list2)
 
 if __name__ == '__main__':
 
     merge(
-        '/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xmlascii.csv',
-        '/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_1.xmlascii.csv',
+        '/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xmlascii1000.csv',
+        '/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_1.xmlascii1000.csv',
         '/tmp/mergeout.csv')

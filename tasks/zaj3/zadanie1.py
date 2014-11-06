@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import csv
 
 def load_data(path):
     """
@@ -18,7 +19,14 @@ def load_data(path):
     :return: Lista dwuelementowych krotek, pierwszym elementem jest ngram, drugim
     ilość wystąpień ngramu
     """
+    list = []
+    with open(path, 'r') as f:
+        r = csv.reader(f, dialect=csv.unix_dialect)
+        for line in r:
+            tuple = (line[0], int(line[1]))
+            list.append(tuple)
 
+    return list
 
 def suggester(input, data):
     """
@@ -75,3 +83,33 @@ def suggester(input, data):
      ('e', 0.07352941176470588),
      ('i', 0.014705882352941176)]
     """
+    N = 0
+    list = []
+    dict = {}
+    for ii in data:
+        if input == ii[0][:len(input)]:
+            N += ii[1]
+            literka = ii[0][len(input):len(input) + 1]
+            if literka not in dict:
+                dict[literka] = ii[1]
+            elif literka in dict:
+                dict[literka] += ii[1]
+                      
+    sum = 0
+    for key, value in dict.items():
+        value = value / N
+        tuple = (key, value)
+        sum += value
+        list.append(tuple)
+ 
+    list.sort(key=lambda x: -x[1])
+    return list
+        
+#prob = jj[1] / N
+        #tuple = (jj[0][len(input):-1], prob)
+            
+    
+
+list = load_data('/opt/pwzn/zaj3/enwiki-20140903-pages-articles_part_0.xmlascii1000.csv')
+list2 = suggester('pyth', list)
+#print(list2)
