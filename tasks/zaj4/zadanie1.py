@@ -5,7 +5,7 @@ import numpy as np
 
 def linear_func(x, a, b):
     """
-    Funkcja ta zwraca wyznacza a*x + b, funkcja ta powinna działać bez względu
+    Funkcja ta zwraca a*x + b, funkcja ta powinna działać bez względu
     na to czy x to tablica numpy czy liczba zmiennoprzecinkowa.
 
     Podpowiedź: Nie jest to bardzo trudne.
@@ -14,7 +14,7 @@ def linear_func(x, a, b):
     :param float a:
     :param float b:
     """
-
+    return a*x + b
 
 def chisquared(xy, a, b):
     """
@@ -30,12 +30,13 @@ def chisquared(xy, a, b):
 
 
     :param np.ndarray xy: Tablica o rozmiarze N x 3, w pierwszej kolumnie
-        zawarte są wartości zmiennej a w drugiej wartości y.
+    zawarte są wartości zmiennej a w drugiej wartości y.
     :param float a:
     :param float b:
     :return:
     """
-
+    chi2 = np.sum( (xy[1,:] - linear_func(xy[0,:], a, b)) * (xy[1,:] - linear_func(xy[0,:], a, b)) / xy.shape[0])
+    return chi2
 
 def least_sq(xy):
     """
@@ -49,3 +50,8 @@ def least_sq(xy):
     :param xy: Jak w chisquared, uwaga: sigma_y nie jest potrzebne.
     :return: Krotka
     """
+    N = xy.shape[0]
+    Delta = N * np.sum(xy[0,:] * xy[0,:]) - np.sum(xy[0,:]) * np.sum(xy[0,:])
+    A = (np.sum(xy[0,:] * xy[0,:]) * np.sum(xy[1,:]) - np.sum(xy[0,:]) * np.sum(xy[1,:] * xy[1,:])) / Delta
+    B = (N * np.sum(xy[1,:] * xy[1,:]) - np.sum(xy[0,:]) * np.sum(xy[1,:])) / Delta
+    return (A, B)

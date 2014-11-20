@@ -80,7 +80,7 @@ def generate_ngrams(contents, ngram_len=7):
     Funkcja wylicza częstotliwość n-gramów w części wikipedii.
     N-gramy są posortowane względem zawartości n-grama.
 
-    Testiowanie tej funkcji na pełnych danych może być uciążliwe, możecie
+    Testowanie tej funkcji na pełnych danych może być uciążliwe, możecie
     np. po 1000 stron kończyć tą funkcję.
 
     :param generator contents: Wynik wywołania funkcji: ``iter_over_contents``,
@@ -94,8 +94,13 @@ def generate_ngrams(contents, ngram_len=7):
     if ngram_len < 1:
         return None
     dict = {}
-    for ii in contents:
-        ngram = ii[1][0:ngram_len]
+    gram, content = contents[0]
+    ii = 0
+    while True:
+        ngram = content[ii:ii+ngram_len]
+        ii+=1
+        if ngram is "":
+            break
         if ngram in dict:
             dict[ngram] += 1
         else:
@@ -104,12 +109,13 @@ def generate_ngrams(contents, ngram_len=7):
 
 def save_ngrams(out_file, contents, ngram_len=7):
     """
-    Funkcja która (tylko) zapisuje n-gramy do pliku.
+    Funkcja działa tak jak `generate_ngrams` ale zapisuje wyniki do pliku
+    out_file. Może wykorzystywać generate_ngrams!
 
     Plik ma format csv w dialekcie ``csv.unix_dialect`` i jest posortowany
     względem zawartości n-grama.
 
-    :param dict contents: Słownik z n-gramami
+    :param dict ngram_dict: Słownik z n-gramami
     :param str out_file: Plik do którego n-gramy zostaną zapisane
     """
     dict = generate_ngrams(contents, ngram_len)
