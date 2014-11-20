@@ -11,7 +11,7 @@ def calculate_neighbours(board):
 
     Funkcja zwraca tablicę która w polu N[R, C] zwraca ilość sąsiadów którą 
     ma komórka Board[R, C]. Za sąsiada uznajemy obszazoną komórkę po bokach lub
-    na ukos od danej komórki, komórka nie jest swoim sąsiatem, zatem maksymalna
+    na ukos od danej komórki, komórka nie jest swoim sąsiadem, zatem maksymalna
     ilość sąsiadów danej komórki wynosi 8.
 
     Funkcja ta powinna być zwektoryzowana, tj ilość operacji w bytekodzie

@@ -35,7 +35,7 @@ def chisquared(xy, a, b):
     :param float b:
     :return:
     """
-    chi2 = np.sum( (xy[1,:] - linear_func(xy[0,:], a, b)) * (xy[1,:] - linear_func(xy[0,:], a, b)) / xy.shape[0])
+    chi2 = np.sum( (xy[:,1] - linear_func(xy[:,0], a, b)) * (xy[:,1] - linear_func(xy[:,0], a, b)) / xy.shape[0])
     return chi2
 
 def least_sq(xy):
@@ -51,7 +51,7 @@ def least_sq(xy):
     :return: Krotka
     """
     N = xy.shape[0]
-    Delta = N * np.sum(xy[0,:] * xy[0,:]) - np.sum(xy[0,:]) * np.sum(xy[0,:])
-    A = (np.sum(xy[0,:] * xy[0,:]) * np.sum(xy[1,:]) - np.sum(xy[0,:]) * np.sum(xy[1,:] * xy[1,:])) / Delta
-    B = (N * np.sum(xy[1,:] * xy[1,:]) - np.sum(xy[0,:]) * np.sum(xy[1,:])) / Delta
+    Delta = N * np.sum(xy[:,0] * xy[:,0]) - np.sum(xy[:,0]) * np.sum(xy[:,0])
+    A = (np.sum(xy[:,0] * xy[:,0]) * np.sum(xy[:,1]) - np.sum(xy[:,0]) * np.sum(xy[:,0] * xy[:,1])) / Delta
+    B = (N * np.sum(xy[:,0] * xy[:,1]) - np.sum(xy[:,0]) * np.sum(xy[:,1])) / Delta
     return (A, B)

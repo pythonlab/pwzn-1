@@ -65,7 +65,6 @@ class TestClass(unittest.TestCase):
         self.assertEqual(
             dict(self.generate_ngrams([("foo", "Ala ma kota")], 1)),
             dict(self.generate_ngrams([("foo", a) for a in ['Ala', 'ma', 'kota', '  ']], 1)))
-
     def test_3gram(self):
         self.assertEqual(
             dict(self.generate_ngrams([("foo", "Ala ma kota a Marta ma Asa")], 3)),

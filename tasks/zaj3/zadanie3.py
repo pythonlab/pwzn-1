@@ -94,17 +94,21 @@ def generate_ngrams(contents, ngram_len=7):
     if ngram_len < 1:
         return None
     dict = {}
-    gram, content = contents[0]
-    ii = 0
-    while True:
-        ngram = content[ii:ii+ngram_len]
-        ii+=1
-        if ngram is "":
-            break
-        if ngram in dict:
-            dict[ngram] += 1
-        else:
-            dict[ngram] = 1
+    
+    for jj in contents:
+        gram, content = jj
+        ii = 0
+        while True:
+            ngram = content[ii:ii+ngram_len]
+            ii+=1
+            if ngram is "":
+                break
+            if len(ngram) < ngram_len:
+                break
+            if ngram in dict:
+                dict[ngram] += 1
+            else:
+                dict[ngram] = 1
     return dict
 
 def save_ngrams(out_file, contents, ngram_len=7):
