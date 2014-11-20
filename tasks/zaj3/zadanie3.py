@@ -1,3 +1,4 @@
+#!/usr/bin/python3.3
 # -*- coding: utf-8 -*-
 
 
@@ -90,9 +91,18 @@ def generate_ngrams(contents, ngram_len=7):
 
     :return: Funkcja zwraca słownik n-gram -> ilość wystąpień
     """
+    if ngram_len < 1:
+        return None
+    dict = {}
+    for ii in contents:
+        ngram = ii[1][0:ngram_len]
+        if ngram in dict:
+            dict[ngram] += 1
+        else:
+            dict[ngram] = 1
+    return dict
 
-
-def save_ngrams(out_file, contents):
+def save_ngrams(out_file, contents, ngram_len=7):
     """
     Funkcja działa tak jak `generate_ngrams` ale zapisuje wyniki do pliku
     out_file. Może wykorzystywać generate_ngrams!
@@ -103,3 +113,12 @@ def save_ngrams(out_file, contents):
     :param dict ngram_dict: Słownik z n-gramami
     :param str out_file: Plik do którego n-gramy zostaną zapisane
     """
+    dict = generate_ngrams(contents, ngram_len)
+    list = []
+    for key, value in dict.items():
+        tuple = (key, value)
+        list.append(tuple)
+    list.sort(key=lambda x: x[0])
+    with open(file, 'w') as f:
+        writer = csv.writer(f, dialect=csv.unix_dialect)
+        writer.writerows(list)
