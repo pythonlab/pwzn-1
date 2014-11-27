@@ -34,9 +34,17 @@ def calculate_neighbours(board):
         for jj in range(ny):
             neighbours = 0
             for kk in np.arange(ii-1, ii+1, 1):
-                for ll in np.arange(jj-1, jj+1, 1):
-                    if board(kk, ll) is True:
-                        neighbours += 1
+                if kk > 0 and kk < nx:
+                    for ll in np.arange(jj-1, jj+1, 1):
+                        if ll > 0 and ll < ny:
+                            if board(kk, ll) is True:
+                                neighbours += 1
+        if board(ii, jj) is False and neighbours is 3:
+            board(ii, jj) = True
+        if board(ii, jj) is True:
+            if neighbours < 2 or neighbours > 3:
+                board(ii, jj) = False
+                
 
 def iterate(board):
 
