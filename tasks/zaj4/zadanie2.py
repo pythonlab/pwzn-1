@@ -10,7 +10,7 @@ def calculate_neighbours(board):
     """
 
     Funkcja zwraca tablicę która w polu N[R, C] zwraca ilość sąsiadów którą 
-    ma komórka Board[R, C]. Za sąsiada uznajemy obszazoną komórkę po bokach lub
+    ma komórka Board[R, C]. Za sąsiada uznajemy obszadzoną komórkę po bokach lub
     na ukos od danej komórki, komórka nie jest swoim sąsiadem, zatem maksymalna
     ilość sąsiadów danej komórki wynosi 8.
 
@@ -26,9 +26,17 @@ def calculate_neighbours(board):
     których ma każda z komórek w macierzy, następnie liczymy ilość sąsiadów
     prawych itp.
 
-    Podpowiedź II: Proszę uważać na komówki na bokach i rogach planszy.
+    Podpowiedź II: Proszę uważać na komórki na bokach i rogach planszy.
     """
-
+    nx, ny = board.shape
+    new_board = np.zeros(nx, ny)
+    for ii in range(nx):
+        for jj in range(ny):
+            neighbours = 0
+            for kk in np.arange(ii-1, ii+1, 1):
+                for ll in np.arange(jj-1, jj+1, 1):
+                    if board(kk, ll) is True:
+                        neighbours += 1
 
 def iterate(board):
 
