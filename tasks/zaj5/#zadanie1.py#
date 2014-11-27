@@ -88,6 +88,8 @@ def suggester(input, data):
         matrix[0, ii] = key
         matrix[1, ii] = value
         ii += 1
+
+    np.sort(matrix, 
         # tuple = (key, value)
         # list.append(tuple)
         
