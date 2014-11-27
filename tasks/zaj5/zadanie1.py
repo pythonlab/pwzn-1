@@ -30,7 +30,7 @@ def load_data(path):
     """
     dtype = np.dtype([
             ("7-gram", np.dtype("a7")),
-            ("counts", np.uint4)])
+            ("counts", np.dtype("u4"))])
 
     data = np.memmap(path, dtype=dtype)
     return data
@@ -71,26 +71,30 @@ def suggester(input, data):
      ('e', 0.07352941176470588),
      ('i', 0.014705882352941176)]
     """
-    N = 0
+    next_input = next_item(input)
+    first_index, second_index = np.searchsorted(data['7-gram'], [input, next_input])
+    array = data[first_index:second_index]
+    n = array.shape
     dict = {}
-    for ii in data:
-        if input == ii[0][:len(input)]:
-            N += ii[1]
-            literka = ii[0][len(input):len(input) + 1]
-            if literka not in dict:
-                dict[literka] = ii[1]
-            elif literka in dict:
-                dict[literka] += ii[1]
-    matrix = np.zeros(2, len(dict))
-    ii=0
+    N=0
+    for ii in range(n[0]):
+        letter, value = array[ii]
+        N+=value
+        if letter not in dict:
+            dict[letter] = value
+        elif letter in dict:
+            dict[letter] += value
+        
+    list=[]
     for key, value in dict.items():
         value = value / N
-        matrix[0, ii] = key
-        matrix[1, ii] = value
-        ii += 1
-        # tuple = (key, value)
-        # list.append(tuple)
-        
-    #list.sort(key=lambda x: -x[1]) 
+        letter = key[-1]
+        tuple = (chr(letter), value)
+        list.append(tuple)
+ 
+    list.sort(key=lambda x: -x[1])
+    return list
 
-    return matrix
+# data = load_data("enwiki-20140903-pages-articles_part_0.xmlascii1000.bin")
+# list = suggester('pytho', data)
+# print(list)
