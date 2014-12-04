@@ -43,10 +43,7 @@ def suggester(input, data):
     :param str input: Ciąg znaków o długości 6 znaków. **UWAGA** Na zajęciach trzecich
                       input mógł mieć dowolną długość.
     :param np.ndarray data: Wynik działania ``load_data``.
-    :return: Dowolną strukturę którą można zaindeksować w następujący sposób:
-            ret[0][0] zwraca najbardziej prawdopodobną następną literę. ret[0][1]
-            jej prawdopodobieństwo. ret[-1][0] zwraca najmniej prawdopodobną literę.
-            Dane posortowane są względem prawdopodobieństwa.
+
 
     By wygenerować częstotliwości należy:
 
