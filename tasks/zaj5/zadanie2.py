@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-
+import numpy as np
+import struct
+import mmap
+import os
 
 class InvalidFormatError(IOError):
     pass
@@ -63,3 +66,32 @@ def load_data(filename):
 
     W zadaniu 3 będziecie na tym pliku robić obliczenia.
     """
+    structure = struct.Struct("<16s3H2I")
+
+    file_stat = os.stat(filename)
+    if file_stat.st_size < 30:
+        raise InvalidFormatError
+
+    with open(filename, 'rb') as f:
+        try:
+            data = mmap.mmap(f.fileno(), 0, mmap.MAP_SHARED, mmap.PROT_READ)
+            unpack_struct = structure.unpack(data[0 : structure.size])
+        except:
+            raise InvalidFormatError
+        if unpack_struct[0] != b'6o\xfdo\xe2\xa4C\x90\x98\xb2t!\xbeurn':
+            raise InvalidFormatError
+        if unpack_struct[1] != 3:
+            raise InvalidFormatError
+        if data.size() != unpack_struct[5]+unpack_struct[4]*unpack_struct[3]:
+            raise InvalidFormatError
+        if unpack_struct[3] < 30:
+            raise InvalidFormatError
+
+    dtype_struct = [('event_id', np.uint16), ('particle_position', np.dtype("3float32")),('particle_mass', np.float32), ('particle_velocity', np.dtype("3float32"))]
+
+    if unpack_struct[3] > 30:
+        dtype_struct += [('padding', str(unpack_struct[3]-30)+'a')]
+        
+    data_type = np.dtype(dtype_struct)
+
+    return np.memmap(filename, dtype=data_type, mode='r', offset=unpack_struct[5])

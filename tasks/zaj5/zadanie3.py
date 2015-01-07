@@ -18,7 +18,7 @@ def get_event_count(data):
 
     :param np.ndarray data: Wynik działania zadanie2.load_data
     """
-
+    return np.max(data['event_id'])
 
 def get_center_of_mass(event_id, data):
     """
@@ -26,7 +26,9 @@ def get_center_of_mass(event_id, data):
     :param np.ndarray data: Wynik działania zadanie2.load_data
     :return: Macierz 3 x 1
     """
-
+    mydata = data[data['event_id'] == event_id]
+    center_of_mass = np.sum(mydata['particle_position'] * mydata['particle_mass'][:, np.newaxis], axis = 0) / np.sum(mydata['particle_mass'])
+    return center_of_mass
 
 def get_energy_spectrum(event_id, data, left, right, bins):
     """
@@ -39,6 +41,10 @@ def get_energy_spectrum(event_id, data, left, right, bins):
 
     Podpowiedż: np.histogram
     """
+    mydata = data[data['event_id'] == event_id]
+    v = np.linalg.norm(mydata['particle_velocity'], axis = 1)
+    m = mydata['particle_mass']
+    return np.histogram(m * v * v / 2, bins = bins, range = (left, right))[0]
 
 if __name__ == "__main__":
     data = load_data("...")
